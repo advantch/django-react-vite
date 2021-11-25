@@ -1,4 +1,4 @@
-# Advantch Django AlpineJS Tutorial
+# Advantch Django Starter
 
 ## Getting Started
 

@@ -16,6 +16,10 @@ This keeps your dependencies for each project separate and organaized.
 Instructions for setting up a virual enviornment for your platform can be found in
  the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 #### PIP Dependencies
 
 Once you have your virtual environment setup, run the following to install the project requirements:

@@ -31,7 +31,6 @@ Once you have your virtual environment setup, run the following to install the p
 pip install -r requirements.txt
 ```
 
-
 ## Running the server
 
 To run the server
@@ -39,6 +38,20 @@ To run the server
 ```bash
 
 python manage.py runserver
+```
+
+#### npm & node
+
+Follow the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
+## Running the Vite dev server
+
+To run the server
+
+```bash
+
+npm install
+npm run build
 ```
 
 ## Testing

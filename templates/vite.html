@@ -1,11 +1,20 @@
 
    
 {% extends 'base.html' %}{% load django_vite %}
-{% block title %}Vite Example{% endblock %}
+{% block title %}Vite React Echarts Example{% endblock %}
 {% block head_js %}
     {% vite_hmr_client %}
-    {% vite_asset 'js/main.js' %}
 {% endblock %}
 {% block content %}
       {% include "components/nav.html" with btn_text="connected" %}
+      <section class="container mx-auto pt-12 py-8 px-4 lg:px-6 xl:px-12">
+        <div class="flex flex-row p-10">
+            <div id="chart-container" class="w-full md:w-1/2 h-96"></div
+            <div id="controls-container" class="w-full md:w-1/2 h-96"></div
+        </div>
+      </section>
+{% endblock %}
+{% block footer_js %}
+    {% vite_asset 'js/main.jsx' %}
+    {{block.super}}
 {% endblock %}

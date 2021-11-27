@@ -1,0 +1,13 @@
+{
+  "js/main.jsx": {
+    "file": "main.b27ce11c.js",
+    "src": "js/main.jsx",
+    "isEntry": true,
+    "imports": [
+      "_vendor-9fc5ade5.js"
+    ]
+  },
+  "_vendor-9fc5ade5.js": {
+    "file": "vendor-9fc5ade5.js"
+  }
+}

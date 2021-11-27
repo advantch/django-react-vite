@@ -15,7 +15,7 @@ module.exports = {
     },
   },
   resolve: {
-    extensions: ['.js', '.json'],
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
   },
   build: {
     outDir: resolve('./static/dist'),
@@ -25,7 +25,7 @@ module.exports = {
     target: 'es2015',
     rollupOptions: {
       input: {
-        main: resolve('./static/src/js/main.js'),
+        main: resolve('./static/src/js/main.jsx'),
       },
       output: {
         chunkFileNames: undefined,

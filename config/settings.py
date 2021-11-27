@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    "django_vite"
 ]
 
 MIDDLEWARE = [
@@ -107,11 +109,29 @@ USE_TZ = True
 
 # STATIC
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [str(BASE_DIR / "static")]
+
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
+# Where ViteJS assets are built.
+DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
+
+# If use HMR or not.
+DJANGO_VITE_DEV_MODE = DEBUG
+
+# Name of static files folder (after called python manage.py collectstatic)
+STATIC_ROOT = "staticfiles"
+
+# Include DJANGO_VITE_ASSETS_PATH into STATICFILES_DIRS to be copied inside
+STATICFILES_DIRS = [
+    str(BASE_DIR / "static"),DJANGO_VITE_ASSETS_PATH
+]
+
 ALLOWED_HOSTS = ["*"]
 X_FRAME_OPTIONS = "*"
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

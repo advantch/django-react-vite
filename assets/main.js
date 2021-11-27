@@ -1,0 +1,1 @@
+alert('Django Vite Is working');

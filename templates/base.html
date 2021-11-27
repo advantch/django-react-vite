@@ -12,28 +12,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   {# site meta and seo meta tags, override on specific pages as necessary. #}
-
   {% block site_meta %}{% endblock %}
   {% block seo-meta %}
     <meta name="robots" content="index,follow">
   {% endblock %}
 
+
+  {# optional #}
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@1.16.2/dist/full.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+
   {% block extra_css %}{% endblock %}
   {% block head_js %}{% endblock %}
 
-<link href="{% static 'css/site.css' %}" rel="stylesheet" type="text/css" />
-
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@1.16.1/dist/full.css" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
-
-
-  {# Alpine and app scripts #}
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>  
-
-
 </head>
 
-<body id="id-body" class="{{theme}}">
+<body>
 <div>
   <div class="flex h-screen antialiased overflow-x-hidden bg-base-200 text-base-content">
 
@@ -56,7 +50,7 @@
 
     // the application uses the swagger js client to interact with the api
     // if you are building a separate frontend, consult the docs on how to generate a client in typescript
-    const client = SwaggerClient('/api/schema/', {
+    const client = SwaggerClient('/api/openapi.json', {
       requestInterceptor: (req) => {
         req.headers['X-CSRFToken'] = csrftoken;
         req.headers['Content-Type'] = 'application/json';

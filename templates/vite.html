@@ -4,8 +4,11 @@
 {% block title %}Vite Example{% endblock %}
 {% block head_js %}
     {% vite_hmr_client %}
-    {% vite_asset 'js/main.js' %}
 {% endblock %}
 {% block content %}
       {% include "components/nav.html" with btn_text="connected" %}
+{% endblock %}
+{% block footer_js %}
+    {{ block.super }}
+    {% vite_asset 'js/main.jsx' %}
 {% endblock %}

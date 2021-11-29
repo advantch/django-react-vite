@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 module.exports = {
   plugins: [react()],
-  root: resolve('./static/src'),
+  root: resolve('./assets/'),
   base: '/static/',
   server: {
     host: 'localhost',
@@ -15,7 +15,7 @@ module.exports = {
     },
   },
   resolve: {
-    extensions: ['.js', '.json'],
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
   },
   build: {
     outDir: resolve('./static/dist'),
@@ -25,11 +25,12 @@ module.exports = {
     target: 'es2015',
     rollupOptions: {
       input: {
-        main: resolve('./static/src/js/main.js'),
+        main: resolve('./assets/js/main.jsx'),
       },
       output: {
         chunkFileNames: undefined,
       },
     },
+    
   },
 };

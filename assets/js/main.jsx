@@ -1,0 +1,1 @@
+alert("vite template works!!")

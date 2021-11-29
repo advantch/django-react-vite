@@ -60,5 +60,4 @@ pytest
 
 ```
 
-## Authors
-Advantch
+

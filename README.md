@@ -1,4 +1,4 @@
-# Advantch Django Starter
+# Advantch Django, React & Vite Starter
 
 ## Getting Started
 
@@ -40,7 +40,7 @@ To run the server
 python manage.py runserver
 ```
 
-#### npm & node
+#### NPM & node installation
 
 Follow the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
@@ -51,6 +51,13 @@ To run the server
 ```bash
 
 npm install
+npm run dev
+```
+
+## Build your production assets
+
+
+```bash
 npm run build
 ```
 
@@ -60,5 +67,4 @@ pytest
 
 ```
 
-## Authors
-Advantch
+

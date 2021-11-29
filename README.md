@@ -40,7 +40,7 @@ To run the server
 python manage.py runserver
 ```
 
-#### npm & node
+#### NPM & node installation
 
 Follow the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
@@ -52,6 +52,13 @@ To run the server
 
 npm install
 npm run dev
+```
+
+## Build your production assets
+
+
+```bash
+npm run build
 ```
 
 ## Testing

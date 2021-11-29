@@ -1,4 +1,4 @@
-# Advantch Django Starter
+# Advantch Django, React & Vite Starter
 
 ## Getting Started
 
@@ -51,7 +51,7 @@ To run the server
 ```bash
 
 npm install
-npm run build
+npm run dev
 ```
 
 ## Testing

@@ -31,5 +31,6 @@ module.exports = {
         chunkFileNames: undefined,
       },
     },
+    
   },
 };

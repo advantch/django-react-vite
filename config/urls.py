@@ -7,5 +7,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path("vite/", TemplateView.as_view(template_name="vite.html"), name="vite"),
+    path("ht/", include("health_check.urls")),
     path("api/", api.urls),
 ]

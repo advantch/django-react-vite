@@ -15,7 +15,7 @@ RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
 COPY . /code/
-
+EXPOSE 8000
 #ENTRYPOINT ["/entrypoint"]
 
 CMD ["/start"]

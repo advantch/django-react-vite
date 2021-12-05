@@ -1,8 +1,16 @@
 import os
 from pathlib import Path
 
+import environ
+env = environ.Env()
+
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+if READ_DOT_ENV_FILE:
+    # OS environment variables take precedence over variables from .env
+    env.read_env(str(BASE_DIR/ ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -75,18 +83,9 @@ DATABASES = {
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
-DB_POSTGRES = os.getenv("DB_POSTGRES", default="False") == "True"
-if DB_POSTGRES:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.getenv("DB_NAME"),
-            "USER": os.getenv("DB_USER"),
-            "PASSWORD": os.getenv("DB_PASSWORD"),
-            "HOST": os.getenv("DB_HOST"),
-            "PORT": os.getenv("DB_PORT"),
-        }
-    }
+DB_IS_PGSQL = os.getenv("DB_IS_PGSQL", default="True") == "True"
+if DB_IS_PGSQL:
+    DATABASES = {"default": env.db("DATABASE_URL")}
 
 
 # Password validation

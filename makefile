@@ -19,9 +19,8 @@ deploy-to-nomad:
 	nomad job run app.nomad
 
 check_status: # Check the status of the cluster
-   nomad job status ${JOB_NAME}
+	nomad job status ${JOB_NAME}
 
 exec_on_task: # create superuser
-    export TASK_NAME=python manage.py createsuperuser
-    nomad job status ${JOB_NAME}
-	nomad exec ${ALLOC_ID} ${TASK_NAME}
+	nomad job status ${JOB_NAME}
+	nomad exec ${ALLOC_ID} python manage.py createsuperuser

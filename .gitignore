@@ -51,3 +51,5 @@ coverage.xml
 docs/_build/
 
 node_modules/*
+db
+*.sqlite3

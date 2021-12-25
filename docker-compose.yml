@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  traefik:
+    container_name: "django-react"
+    restart: always
+    build: .
+    volumes:
+      - .:/app:z
+    env_file:
+      - .env
+    ports:
+      - "8010:8000"

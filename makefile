@@ -1,6 +1,10 @@
-build:
-	npm run build
+build-docker:
 	docker build -t django-react .
+
+build-frontend:
+	npm run build
+
+build: build-frontend build-docker 
 
 deploy-to-hub:
 	docker tag django-react thembahank/django-react

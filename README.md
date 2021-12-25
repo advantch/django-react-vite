@@ -74,3 +74,10 @@ npm run build
 docker build -t django-react .
 docker run -dp 8000:8000 django-react
 ```
+
+## Nomad deployments
+```
+make buid
+make deploy-to-hub
+make deploy-to-nomad
+```

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}{% load static %}
+
+{% block content %}
+    {% include "components/nav.html" with btn_text="connect" %}
+    <div class="container px-4 mx-auto pt-12 flex justify-between items-center py-8 px-4 xl:px-10">
+        
+        <div class="flex flex-col">
+            <div class="flex mb-10">
+                    <h2 class="fontbold text-primary text-xs">Database: </h2> 
+                    <p class="text-xs">{{database}}</p>
+            </div>   
+            <div class="flex mb-2">
+                <h2 class="fontbold text-primary text-xs">Server Stats</h2> 
+             </div>   
+            <div class="grid grid-cols-3 gap-4">
+                {% for plugin in plugins %}
+                <div class="card rounded-sm bg-gray-100 shadow-lg min-w-xs max-w-xs">
+                    <div class="card-body">
+                        <h2 class="card-title text-xs">{{ plugin.identifier }}</h2> 
+                        <p class="text-xs text-success animate-pulse">{{ plugin.pretty_status }}</p>
+                        <p class="text-xs fontbold">{{ plugin.time_taken|floatformat:4 }} seconds</p>
+                    </div>
+                </div>
+               {% endfor %}
+            </div>
+        </div>
+        
+        
+    </div>
+    
+{% endblock %}

@@ -79,7 +79,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-REDIS_URL = env("REDIS_URL", default=("127.0.0.1", 6379))
+REDIS_URL = env("REDIS_URL", default="redis://redis:6379/0")
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -89,7 +89,7 @@ CHANNEL_LAYERS = {
     },
 }
 
-CACHE_LOCATION = env("REDIS_URL", default="redis://127.0.0.1:6379/1")
+CACHE_LOCATION = REDIS_URL
 CACHES = {
     'default': {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -105,9 +105,11 @@ DATABASES = {
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
+
 DB_IS_PGSQL = os.getenv("DB_IS_PGSQL", default="True") == "True"
 if DB_IS_PGSQL:
     DATABASES = {"default": env.db("DATABASE_URL")}
+
 
 
 # Password validation
@@ -127,7 +129,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

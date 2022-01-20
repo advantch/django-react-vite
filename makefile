@@ -11,8 +11,7 @@ deploy-to-hub:
 	docker push thembahank/django-react
 
 run-local:
-	export PORT=8000
-	docker run -p ${PORT}:8000 -d django-react
+	docker run -p 8000:8000 django-react
 
 pg-url:
 	export DATABASE_URL=postgres://root:rootpassword@localhost:5432/postgres

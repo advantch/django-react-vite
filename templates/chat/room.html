@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
     {% include "components/nav.html" with btn_text="connect" %}
-    <div class="container px-4 mx-auto pt-12 flex justify-between items-center py-8 px-4 xl:px-10" x-data="chatRoom">
+    <div class="container mx-auto pt-12 flex justify-between items-center py-8 px-4 xl:px-10" x-data="chatRoom">
         <div class="flex flex-col w-full max-w-sm md:max-w-3xl" >
             <h1 class="text-2xl font-bold px-2" x-text='`Room: ${data.roomName}`'></h1>
             <section class="flex flex-col w-full max-w-sm md:max-w-5xl p-2 relative">
@@ -19,8 +19,8 @@
                     </div>
                 </div>
          
-              <div id="chatContent" class="border-2 border-gray-200 rounded-lg w-full p-4 mb-5 h-96 min-h-full overflow-y-auto flex flex-col justify-end" :class="isLoading && 'blur-lg'">
-                <ul role="list" class="space-y-2 flex flex-col justify-end content-end overflow-x-hidden">
+              <div id="chatContent" class="border-2 border-gray-200 rounded-lg w-full mb-5 h-96 min-h-full overflow-y-auto flex flex-col" :class="isLoading && 'blur-lg'">
+                <ul role="list" class="space-y-2 flex flex-col overflow-x-hidden">
                     <template x-for="(msg, index) in data.messages">
                         {% include "chat/_chat_message.html" %}
                     </template>

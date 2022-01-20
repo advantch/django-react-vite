@@ -2,8 +2,10 @@
 FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+
 WORKDIR /code
-COPY requirements.txt /code/
+
+COPY requirements.txt /code
 RUN pip install -r requirements.txt
 
 COPY ./entrypoint.sh /entrypoint
@@ -16,6 +18,7 @@ RUN chmod +x /start
 
 COPY . /code/
 EXPOSE 8000
+
 #ENTRYPOINT ["/entrypoint"]
 
 CMD ["/start"]

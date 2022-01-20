@@ -16,3 +16,4 @@ urlpatterns = [
     path("ht/", include("health_check.urls")),
     path("api/", api.urls),
 ]
+

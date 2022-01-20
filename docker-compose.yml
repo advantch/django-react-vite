@@ -1,13 +1,21 @@
 version: "3.9"
 
 services:
-  traefik:
-    container_name: "django-react"
-    restart: always
+  django:
     build: .
+    image: "django-react"
+    restart: always
     volumes:
-      - .:/app:z
+      - .:/code
     env_file:
       - .env
     ports:
-      - "8010:8000"
+      - "8000:8000"
+  redis:
+    image: redis:5.0
+    volumes:
+      - redis-data:/usr/local/etc/redis
+    ports:
+      - "6379:6379"
+volumes:
+  redis-data: {}

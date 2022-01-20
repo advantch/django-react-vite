@@ -1,0 +1,20 @@
+<li  :id='`msg_${msg.id}`' class="flex p-2 rounded" :class="data.userID === msg.userId ? 'justify-end' : 'justify-start'" x-transition.duration.1200ms>
+    <div class="flex space-x-3 w-1/3 bg-gray-100 rounded-lg px-3 py-2" :class="data.userID === msg.userId ? 'flex-row-reverse' : ''">
+      <div class="flex-shrink-0">
+        <img class="h-8 w-8 rounded-full inline-block" :src="msg.avatarUrl" alt="">
+      </div>
+      <div>
+        <div class="text-sm">
+          <p href="#" class="text-xs font-bold text-gray-600" x-text="msg.userId"></p>
+        </div>
+        <div class="mt-1 text-sm text-gray-900">
+          <p x-text="msg.message"></p>
+        </div>
+        <div class="mt-1 text-xs space-x-2">
+          <span class="text-gray-500 text-xs" x-text="getDate(msg.date)"></span>
+          <span class="text-gray-500 text-xs">&middot;</span>
+          <button type="button" class="text-gray-900 text-xs" @click="copyToText(msg.message, msg.from)">Quote</button>
+        </div>
+      </div>
+    </div>
+</li>

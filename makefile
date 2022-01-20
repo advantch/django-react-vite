@@ -28,3 +28,6 @@ check_status: # Check the status of the cluster
 exec_on_task: # create superuser
 	nomad job status ${JOB_NAME}
 	nomad exec ${ALLOC_ID} python manage.py createsuperuser
+
+tw:
+	npx tailwindcss -i ./assets/input.css -o ./static/output.css --watch

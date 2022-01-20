@@ -1,51 +1,66 @@
-job "djangoreact" {
-    # https://stackoverflow.com/questions/63601913/nomad-and-port-mapping
+job "django" {
+  # https://stackoverflow.com/questions/63601913/nomad-and-port-mapping
   datacenters = ["dc1"]
 
-  constraint {
-    attribute = "${attr.unique.hostname}"
-    operator  = "regexp"
-    value     = "nomad-cluster-general-client-[0-9]+$"
-  }
-
-  group "djangoreact" {
+  group "django" {
     count = 1
+
+    volume "redis" {
+      type            = "csi"
+      source          = "nomad-do-csi"
+      access_mode     = "single-node-writer"
+      attachment_mode = "block-device"
+    }
 
     network {
       port  "djhttp"{
         to = 8000
       }
-    }
-
-    service {
-      name = "djangoreact"
-      port = "djhttp"
-
-      tags = [
-        "traefik.enable=true",
-        "traefik.http.routers.app.entryPoints=http,websecure",
-        "traefik.http.routers.app.rule=Host(`django-react.advantch.com`)", 
-      	"traefik.http.routers.app.tls.certResolver=myresolver",
-      ]
-
-      check {
-        type     = "http"
-        path     = "/ht/"
-        interval = "60s"
-        timeout  = "2s"
+      port  "db"  {
+        static = 6379
       }
     }
 
-    task "djangoreact" {
+    // django app
+    task "django" {
       vault {
         policies = ["default_nomad_job"]
         change_mode   = "signal"
         change_signal = "SIGUSR1"
       }
 
+      resources {
+        cpu    = 100
+        memory = 256
+      }
+
+      service {
+        name = "django"
+        port = "djhttp"
+
+        tags = [
+          "traefik.enable=true",
+          "traefik.tcp.routers.app.entryPoints=http,websecure",
+          "traefik.http.routers.app.entryPoints=http,websecure",
+          "traefik.http.routers.app.rule=Host(`django-react.advantch.com`)", 
+          "traefik.http.routers.app.tls.certResolver=myresolver",
+        ]
+
+      
+        // health checl
+        check {
+          type     = "http"
+          path     = "/ht/"
+          interval = "60s"
+          timeout  = "2s"
+        }
+      }
+
+      // access db via consul
       env {
-        DATABASE_URL="postgresql://root:rootpassword@postgres.service.consul:5432/postgres"
-        DB_IS_PGSQL="True"
+            DATABASE_URL="postgresql://root:rootpassword@postgres.service.consul:5432/postgres"
+            REDIS_URL="redis://redis.service.consul:6379/0"
+            DB_IS_PGSQL="True"
       }
 
       driver = "docker"
@@ -54,6 +69,7 @@ job "djangoreact" {
         image = "thembahank/django-react"
         ports = ["djhttp"]
       }
+    
     }
   }
 }

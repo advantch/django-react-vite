@@ -1,0 +1,138 @@
+<!--Alpine , WS, Django -->
+{% extends 'base.html' %}{% load static %}
+{% block head_js %}
+    <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+{% endblock %}
+{% block content %}
+    {% include "components/nav.html" with btn_text="connect" %}
+    <div class="container px-4 mx-auto pt-12 flex justify-between items-center py-8 px-4 xl:px-10" x-data="chatRoom">
+        <div class="flex flex-col w-full max-w-sm md:max-w-3xl" >
+            <h1 class="text-2xl font-bold px-2" x-text='`Room: ${data.roomName}`'></h1>
+            <section class="flex flex-col w-full max-w-sm md:max-w-5xl p-2 relative">
+                <div class="absolute inset-1/2" x-show="isLoading">
+                    <div class="rounded-full animate-bounce">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                    </div>
+                </div>
+         
+              <div id="chatContent" class="border-2 border-gray-200 rounded-lg w-full p-4 mb-5 h-96 min-h-full overflow-y-auto flex flex-col justify-end" :class="isLoading && 'blur-lg'">
+                <ul role="list" class="space-y-2 flex flex-col justify-end content-end overflow-x-hidden">
+                    <template x-for="(msg, index) in data.messages">
+                        {% include "chat/_chat_message.html" %}
+                    </template>
+                </ul>
+              </div>
+             {% include "chat/_text_area.html" %}
+            </section>
+        </div>    
+    </div>
+    
+{% endblock %}
+{% block footer_js %}
+{{ room_name|json_script:"room-name" }}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+<script src="{% static 'js/timeago.min.js'%}"></script>
+<script>
+
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    const uniqueID = function () {
+        return '_' + Math.random().toString(36).substr(2, 9);
+    }
+    let chatSocket;
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('chatRoom', function () {
+            return {
+                isLoading: true,
+                data:{
+                    message: "",
+                    roomName: roomName,
+                    messages: this.$persist([]).using(sessionStorage).as(`${roomName}-messages`), // persist in localstorge
+                    userID: this.$persist(uniqueID()), // persist in localstorge,
+                    
+                },
+                init(){
+                    console.log("connecting")
+                    this.connect();
+                    this.$nextTick(()=> this.scrollLastMessageIntoView());
+                    console.log(timeago.format(new Date(1640721812850)))
+                    
+                },
+                getDate(date){
+                    console.log(date, timeago.format(date))
+                    return timeago.format(parseInt(date))
+                },
+                connect(){
+                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+
+                    chatSocket = new ReconnectingWebSocket(
+                        ws_scheme
+                        + '://'
+                        + window.location.host
+                        + '/ws/chat/'
+                        + roomName
+                        + '/'
+                    );
+                    this.chatListeners()
+                   
+                },
+                copyToText(msg, from){
+                    this.data.message = `@${from} - ${msg} \n`
+                    
+                },
+                scrollLastMessageIntoView(){
+                    if(this.data.messages.length > 0){
+                        let lastMessageId = `msg_${this.data.messages[this.data.messages.length - 1].id}`;
+                        console.log(lastMessageId)
+                        let el = document.getElementById(lastMessageId)
+                        if (el) {
+                            el.scrollIntoView({ behavior: "smooth", block: "end" })
+                        }
+                    }
+                    if (this.isLoading){this.isLoading = false}
+                    
+                },
+                sendMessage(){
+                    let data = {
+                        'from': this.data.message,
+                        'date': new Date().getTime(),
+                        'timesince':'',
+                        'message': this.data.message,
+                        'userId': this.data.userID,
+                        'id':uniqueID(),
+                        'avatarUrl': `https://i.pravatar.cc/150?u=${this.data.userID}`,
+                    }
+                    
+                    chatSocket.send(JSON.stringify(data)); //send string data
+                    this.data.message = ''
+                },
+                receiveMessage(e){
+                    console.log("chatSocket.onmessage", e)
+                    const data = JSON.parse(e.data)
+                    this.data.messages.push(data)
+                    let id = `msg_${data.id}`
+                    this.$nextTick(()=>this.scrollLastMessageIntoView()) // wait for dom to render element.
+                    
+                },
+                chatListeners(){
+                    chatSocket.onmessage = (e) => this.receiveMessage(e)
+                    chatSocket.onclose = (e)=> console.log("chatSocket.onclose", e)
+                    chatSocket.onerror = (e) => console.log("chatSocket.onerror", e)
+                },
+                clearStorage(){
+                    this.data.messages = []
+                    window.sessionStorage.removeItem(`${roomName}-messages`)
+                }
+
+            }
+
+        })
+    })
+
+</script>
+{% endblock %}

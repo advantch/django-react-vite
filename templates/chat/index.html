@@ -1,0 +1,75 @@
+<!--Alpine , WS, Django -->
+{% extends 'base.html' %}{% load static %} {% block head_js %}
+
+<script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+{% endblock %} {% block content %}
+{% include "components/nav.html" with btn_text="connect" %}
+
+<div class=" container px-4  mx-auto pt-12 flex justify-between items-center px-4 py-8  xl:px-10" x-data="chatIndex">
+    <div class="flex flex-col w-full max-w-sm md:max-w-3xl">
+        <!--Room selector -->
+        <div class="flex flex-row justify-between mb-5">
+            <h1 class="text-2xl font-bold px-2">Public Chat Rooms</h1>
+
+            <select x-on:change="data.roomInput = data.roomInputSelect" x-model="data.roomInputSelect" class="select select-bordered w-full max-w-xs" placeholder="select chat room">
+                <option disabled value="">Your past chat rooms</option>
+                <template x-for="(room, i) in data.rooms">
+                    <option x-text="room"></option>
+                </template>
+            </select>
+        </div>
+        <!--Room input -->
+        <section class="flex flex-col space-y-4 w-full max-w-sm md:max-w-5xl p-2">
+            <p>Create a new room?</p>
+            <input class="input" x-model="data.roomInput" type="text" size="100" />
+            <div class="flex flex-row">
+                <button :disabled="data.roomInput == ''" type="button" @click="goToRoom()"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    :class="data.roomInput == '' ? 'bg-gray-100 text-gray-900' : 'bg-indigo-600 hover:bg-indigo-700'">Open
+                    Room</button>
+
+                    <button @click="clearStorage()" type="button" class=" w-10 h-10 rounded-full inline-flex items-center justify-center text-gray-400 hover:text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="red">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                          </svg>
+                        <span class="sr-only">Clear</span>
+                      </button>
+            </div>
+
+        </section>
+    </div>
+</div>
+
+{% endblock %}
+{% block footer_js %}
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('chatIndex', function () {
+            return {
+                data: {
+                    roomInput:'',
+                    roomInputSelect:'',
+                    rooms: this.$persist([])
+                },
+                goToRoom() {
+                    //return if empty
+                    if(this.data.roomInput == ''){console.log(this.data.roomInput); return};
+
+                    // push room to storage and navigate
+                    this.data.rooms.push(this.data.roomInput);
+                    window.location.pathname = '/chat/' + this.data.roomInput + '/';
+                },
+                clearStorage() {
+                    this.data.messages = []
+                    window.sessionStorage.removeItem(`${rooms}`)
+                }
+
+            }
+
+        })
+    })
+</script>
+{% endblock %}
